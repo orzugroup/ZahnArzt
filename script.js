@@ -26,7 +26,9 @@ const setupPremiumMotion = () => {
   window.gsap.utils.toArray('.process-step, .editorial-bottom > div').forEach((item, index) => {
     window.gsap.from(item, { y: 24, opacity: 0, duration: .65, delay: index * .08, scrollTrigger: { trigger: item, start: 'top 88%', once: true } });
   });
-  window.gsap.from('.appointment-form', { x: 50, opacity: 0, duration: 1, scrollTrigger: { trigger: '.appointment-section', start: 'top 72%', once: true } });
+  if (window.location.hash !== '#termin') {
+    window.gsap.from('.appointment-form', { x: 50, opacity: 0, duration: 1, scrollTrigger: { trigger: '.appointment-section', start: 'top 72%', once: true } });
+  }
 };
 
 setupPremiumMotion();
@@ -40,6 +42,19 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+
+const revealAppointmentFromHash = () => {
+  if (window.location.hash !== '#termin') return;
+  document.querySelectorAll('#termin .reveal').forEach((element) => {
+    element.classList.add('visible');
+    element.style.opacity = '1';
+    element.style.transform = 'none';
+  });
+  window.setTimeout(() => document.querySelector('#termin')?.scrollIntoView({ behavior: 'auto', block: 'start' }), 120);
+};
+window.addEventListener('hashchange', revealAppointmentFromHash);
+window.addEventListener('load', revealAppointmentFromHash);
+revealAppointmentFromHash();
 
 const heroVideos = [...document.querySelectorAll('.hero-video')];
 const heroSceneCaption = document.querySelector('#hero-scene-caption');
