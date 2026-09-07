@@ -70,6 +70,8 @@ nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () =
 
 const form = document.querySelector('#appointment-form');
 const formStatus = document.querySelector('.form-status');
+const dateField = form?.querySelector('input[name="preferred_date"]');
+if (dateField) dateField.min = new Date().toISOString().split('T')[0];
 form?.addEventListener('submit', async (event) => {
   event.preventDefault();
   const submitButton = form.querySelector('button[type="submit"]');
@@ -84,7 +86,7 @@ form?.addEventListener('submit', async (event) => {
     });
     if (!response.ok) throw new Error('Request failed');
     form.reset();
-    formStatus.textContent = 'Vielen Dank. Wir melden uns innerhalb eines Werktages bei Ihnen.';
+    formStatus.textContent = 'Vielen Dank. Ihre Online-Termin Anfrage ist eingegangen. Wir bestätigen Ihren Wunschtermin persönlich.';
   } catch {
     formStatus.textContent = 'Ihre Anfrage konnte gerade nicht gesendet werden. Bitte rufen Sie uns an.';
   } finally {
