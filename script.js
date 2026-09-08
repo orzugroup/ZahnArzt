@@ -26,9 +26,6 @@ const setupPremiumMotion = () => {
   window.gsap.utils.toArray('.process-step, .editorial-bottom > div').forEach((item, index) => {
     window.gsap.from(item, { y: 24, opacity: 0, duration: .65, delay: index * .08, scrollTrigger: { trigger: item, start: 'top 88%', once: true } });
   });
-  if (window.location.hash !== '#termin') {
-    window.gsap.from('.appointment-form', { x: 50, opacity: 0, duration: 1, scrollTrigger: { trigger: '.appointment-section', start: 'top 72%', once: true } });
-  }
 };
 
 setupPremiumMotion();
@@ -55,6 +52,12 @@ const revealAppointmentFromHash = () => {
 window.addEventListener('hashchange', revealAppointmentFromHash);
 window.addEventListener('load', revealAppointmentFromHash);
 revealAppointmentFromHash();
+
+const chatFallback = document.querySelector('.chat-fallback');
+const hasOrzuWidget = () => Boolean(document.querySelector('iframe[src*="orzux"], [id*="orzu"], [class*="orzu"]'));
+const syncChatFallback = () => chatFallback?.classList.toggle('is-hidden', hasOrzuWidget());
+window.setTimeout(syncChatFallback, 2500);
+new MutationObserver(syncChatFallback).observe(document.body, { childList: true, subtree: true });
 
 const heroVideos = [...document.querySelectorAll('.hero-video')];
 const heroSceneCaption = document.querySelector('#hero-scene-caption');
